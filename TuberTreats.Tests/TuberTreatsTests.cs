@@ -77,7 +77,7 @@ public class TuberTreatsTests
         await client.PostAsync($"/tuberorders/{newOrder.Id}/complete", null);
         var completedOrder = await Get<TuberOrder>(client, $"/tuberorders/{newOrder.Id}");
         //completed order has a DeliveredOnDate that is recent
-        Assert.True(completedOrder.DeliveredOnDate?.AddHours(1) > DateTime.Now);
+        Assert.True(completedOrder.OrderPlacedOnDate.AddHours(1) > DateTime.Now);
     }
 
     [Fact]

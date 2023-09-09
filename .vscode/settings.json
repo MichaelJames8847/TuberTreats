@@ -1,3 +1,8 @@
 {
-  "dotnet.defaultSolution": "TuberTreatsAssessment.sln"
+  "dotnet.defaultSolution": "TuberTreatsAssessment.sln",
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#370A83",
+    "titleBar.activeBackground": "#4D0FB8",
+    "titleBar.activeForeground": "#FBF9FF"
+  }
 }

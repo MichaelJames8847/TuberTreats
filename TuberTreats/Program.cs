@@ -115,6 +115,14 @@ List<TuberOrder> tuberOrders = new List<TuberOrder>
         CustomerId = 2,
         TuberDriverId = 0,
     },
+    new TuberOrder 
+    {
+        Id = 5,
+        OrderPlacedOnDate = DateTime.Now.AddDays(6),
+        CustomerId = 1,
+        TuberDriverId = 4,
+        DeliveredOnDate = DateTime.Now.AddHours(-6)
+    }
 };
 
 List<TuberTopping> tuberToppings = new List<TuberTopping>
@@ -142,6 +150,12 @@ List<TuberTopping> tuberToppings = new List<TuberTopping>
         Id = 4,
         ToppingId = 4,
         TuberOrderId = 3,
+    },
+    new TuberTopping 
+    {
+        Id = 5,
+        TuberOrderId = 2,
+        ToppingId = 1
     }
 };
 
@@ -265,13 +279,17 @@ app.MapGet("/tubertoppings", () =>
 
 
 // create new post endpoint for tubertopping
-app.MapPost("/tubertoppings/{id}", (int id, TuberTopping newTuberTopping) =>
+app.MapPost("/tubertoppings", (TuberTopping newTuberTopping) =>
 {
     newTuberTopping.Id = tuberToppings.Count > 0 ? tuberToppings.Max(tt => tt.Id) + 1 : 1;
-    newTuberTopping.TuberOrderId = id;
     tuberToppings.Add(newTuberTopping);
-    return newTuberTopping;
+    
+    TuberOrder tuberOrder = tuberOrders.FirstOrDefault(to => to.Id == newTuberTopping.TuberOrderId);
+    tuberOrder.Toppings.Add(toppings.FirstOrDefault(t => t.Id == newTuberTopping.ToppingId));
+    
+    return newTuberTopping; 
 });
+
 
 app.MapDelete("/tubertoppings/{id}", (int id) =>
 {
@@ -289,6 +307,7 @@ app.MapDelete("/tubertoppings/{id}", (int id) =>
         }
     }
 
+    tuberToppings.Remove(toppingToRemove);
     return Results.Ok();
 });
 
